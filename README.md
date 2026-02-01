@@ -85,13 +85,13 @@ fastprint_test/
 ## 📸 Screenshots
 
 ### Daftar Produk
-![Daftar Produk](screenshots/list.png)
+![Daftar Produk](./screenshots/list.png)
 
 ### Form Tambah/Edit
-![Form](screenshots/form.png)
+![Form](./screenshots/form.png)
 
 ### Konfirmasi Hapus
-![Hapus](screenshots/delete.png)
+![Hapus](./screenshots/delete.png)
 
 ## ✅ Checklist Requirements
 
