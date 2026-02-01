@@ -1,0 +1,65 @@
+{% extends 'products/base.html' %}
+
+{% block title %}Daftar Produk - Fast Print{% endblock %}
+
+{% block content %}
+<h1>📦 Daftar Produk</h1>
+
+<div class="toolbar">
+    <a href="{% url 'produk_tambah' %}" class="btn">+ Tambah Produk</a>
+    
+    <form method="GET" class="filter-form">
+        <label for="status">Filter Status:</label>
+        <select name="status" id="status" onchange="this.form.submit()">
+            <option value="all" {% if current_filter == 'all' %}selected{% endif %}>Semua Produk</option>
+            <option value="bisa_dijual" {% if current_filter == 'bisa_dijual' %}selected{% endif %}>Bisa Dijual</option>
+        </select>
+    </form>
+</div>
+
+{% if produk_list %}
+<table>
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>ID Produk</th>
+            <th>Nama Produk</th>
+            <th>Kategori</th>
+            <th>Harga</th>
+            <th>Status</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for produk in produk_list %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ produk.id_produk }}</td>
+            <td>{{ produk.nama_produk }}</td>
+            <td>{{ produk.kategori.nama_kategori }}</td>
+            <td>Rp {{ produk.harga|floatformat:0 }}</td>
+            <td>
+                {% if produk.status.nama_status == 'bisa dijual' %}
+                    <span style="color: green; font-weight: bold;">✓ {{ produk.status.nama_status|title }}</span>
+                {% else %}
+                    <span style="color: red;">✗ {{ produk.status.nama_status|title }}</span>
+                {% endif %}
+            </td>
+            <td>
+                <div class="actions">
+                    <a href="{% url 'produk_edit' produk.id_produk %}" class="btn btn-warning">Edit</a>
+                    <a href="{% url 'produk_hapus' produk.id_produk %}" class="btn btn-danger">Hapus</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p style="text-align: center; padding: 40px; color: #999;">Tidak ada produk.</p>
+{% endif %}
+
+<p style="margin-top: 20px; color: #666;">
+    Total: <strong>{{ produk_list|length }}</strong> produk
+</p>
+{% endblock %}

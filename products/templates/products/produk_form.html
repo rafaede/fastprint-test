@@ -1,0 +1,77 @@
+{% extends 'products/base.html' %}
+
+{% block title %}
+{% if produk %}Edit Produk{% else %}Tambah Produk{% endif %} - Fast Print
+{% endblock %}
+
+{% block content %}
+<h1>{% if produk %}✏️ Edit Produk{% else %}➕ Tambah Produk{% endif %}</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <label for="nama_produk">Nama Produk *</label>
+        <input type="text" 
+               id="nama_produk" 
+               name="nama_produk" 
+               value="{% if produk %}{{ produk.nama_produk }}{% endif %}"
+               required>
+    </div>
+    
+    <div class="form-group">
+        <label for="harga">Harga (Rp) *</label>
+        <input type="number" 
+               id="harga" 
+               name="harga" 
+               value="{% if produk %}{{ produk.harga }}{% endif %}"
+               min="0"
+               step="0.01"
+               required>
+    </div>
+    
+    <div class="form-group">
+        <label for="kategori_id">Kategori *</label>
+        <select id="kategori_id" name="kategori_id" required>
+            <option value="">-- Pilih Kategori --</option>
+            {% for kategori in kategori_list %}
+            <option value="{{ kategori.id_kategori }}"
+                    {% if produk and produk.kategori.id_kategori == kategori.id_kategori %}selected{% endif %}>
+                {{ kategori.nama_kategori }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="status_id">Status *</label>
+        <select id="status_id" name="status_id" required>
+            <option value="">-- Pilih Status --</option>
+            {% for status in status_list %}
+            <option value="{{ status.id_status }}"
+                    {% if produk and produk.status.id_status == status.id_status %}selected{% endif %}>
+                {{ status.nama_status|title }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div style="display: flex; gap: 10px;">
+        <button type="submit" class="btn">
+            {% if produk %}💾 Update{% else %}➕ Simpan{% endif %}
+        </button>
+        <a href="{% url 'produk_list' %}" class="btn btn-secondary">Batal</a>
+    </div>
+</form>
+
+<script>
+// Client-side validation
+document.querySelector('form').addEventListener('submit', function(e) {
+    const harga = document.getElementById('harga').value;
+    if (harga <= 0) {
+        e.preventDefault();
+        alert('Harga harus berupa angka positif!');
+    }
+});
+</script>
+{% endblock %}
